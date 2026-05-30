@@ -26,7 +26,7 @@ export const translations = {
     rollAgain: 'Roll Again',
     logIn: 'Log in',
     signUp: 'Sign up',
-    copyright: '© 2026 Coin Flip • Bhavesh Krishan Garg'
+    copyright: '© 2026 Games Hub • Bhavesh Krishan Garg'
   },
   es: {
     playGames: 'Juega Juegos',
@@ -55,7 +55,7 @@ export const translations = {
     rollAgain: 'Lanzar de Nuevo',
     logIn: 'Iniciar sesión',
     signUp: 'Registrarse',
-    copyright: '© 2026 Coin Flip • Bhavesh Krishan Garg'
+    copyright: '© 2026 Games Hub • Bhavesh Krishan Garg'
   },
   pt: {
     playGames: 'Jogar Jogos',
@@ -84,7 +84,7 @@ export const translations = {
     rollAgain: 'Rolar Novamente',
     logIn: 'Fazer login',
     signUp: 'Inscrever-se',
-    copyright: '© 2026 Coin Flip • Bhavesh Krishan Garg'
+    copyright: '© 2026 Games Hub • Bhavesh Krishan Garg'
   },
   fr: {
     playGames: 'Jouer aux Jeux',
@@ -113,7 +113,7 @@ export const translations = {
     rollAgain: 'Relancer',
     logIn: 'Se connecter',
     signUp: 'S\'inscrire',
-    copyright: '© 2026 Coin Flip • Bhavesh Krishan Garg'
+    copyright: '© 2026 Games Hub • Bhavesh Krishan Garg'
   },
   hi: {
     playGames: 'खेल खेलें',
@@ -142,6 +142,6 @@ export const translations = {
     rollAgain: 'फिर से रोल करें',
     logIn: 'लॉगिन करें',
     signUp: 'साइन अप करें',
-    copyright: '© 2026 Coin Flip • Bhavesh Krishan Garg'
+    copyright: '© 2026 Games Hub • Bhavesh Krishan Garg'
   }
 };
