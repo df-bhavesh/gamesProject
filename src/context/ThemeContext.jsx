@@ -1,19 +1,35 @@
 import { createContext, useContext, useState } from 'react';
-import { lightTheme, darkTheme } from '../config/muiTheme';
+import { lightTheme, darkTheme, blueTheme, purpleTheme, greenTheme, orangeTheme } from '../config/muiTheme';
 
 const ThemeContext = createContext();
 
-export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const THEMES = {
+  light: lightTheme,
+  dark: darkTheme,
+  blue: blueTheme,
+  purple: purpleTheme,
+  green: greenTheme,
+  orange: orangeTheme
+};
 
-  const theme = isDarkMode ? darkTheme : lightTheme;
+export const ThemeProvider = ({ children }) => {
+  const [currentTheme, setCurrentTheme] = useState('light');
+
+  const theme = THEMES[currentTheme];
+  const isDarkMode = currentTheme === 'dark';
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
+    setCurrentTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const setTheme = (themeName) => {
+    if (THEMES[themeName]) {
+      setCurrentTheme(themeName);
+    }
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, isDarkMode, toggleTheme, currentTheme, setTheme, availableThemes: Object.keys(THEMES) }}>
       {children}
     </ThemeContext.Provider>
   );

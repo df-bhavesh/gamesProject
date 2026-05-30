@@ -1,9 +1,18 @@
-import { Box, Typography, Button, IconButton } from '@mui/material';
-import { memo } from 'react';
+import { Box, Typography, Button, IconButton, Select, MenuItem, Menu } from '@mui/material';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { GamesGrid } from '../components/GamesGrid';
+
+const THEME_OPTIONS = [
+  { code: 'light', label: 'Light', color: '#e84c89' },
+  { code: 'dark', label: 'Dark', color: '#667eea' },
+  { code: 'blue', label: 'Blue', color: '#1976d2' },
+  { code: 'purple', label: 'Purple', color: '#9c27b0' },
+  { code: 'green', label: 'Green', color: '#4caf50' },
+  { code: 'orange', label: 'Orange', color: '#ff9800' }
+];
 
 const WATERMARKS = [
   { emoji: '🎲', top: '5%', right: null, left: '5%', bottom: null, size: '80px', opacity: 0.1 },
@@ -29,7 +38,9 @@ const Watermark = memo(({ item }) => (
 
 export const Home = () => {
   const { t, language, setLanguage } = useLanguage();
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode, currentTheme, setTheme } = useTheme();
+  const [themeAnchor, setThemeAnchor] = useState(null);
+  const [langAnchor, setLangAnchor] = useState(null);
 
   const getHomeBackground = () => {
     return isDarkMode
@@ -112,53 +123,100 @@ export const Home = () => {
           position: 'absolute',
           bottom: '2rem',
           display: 'flex',
-          gap: 1,
+          gap: 1.5,
           alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 10,
           flexWrap: 'wrap',
-          justifyContent: 'center'
+          width: '100%',
+          left: 0,
+          right: 0
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography sx={{ fontSize: '0.75rem', color: isDarkMode ? '#b0b0b0' : '#666', fontWeight: '500' }}>
-              Theme:
-            </Typography>
-            <IconButton
-              onClick={toggleTheme}
-              size="small"
-              sx={{
-                fontSize: '0.9rem',
-                padding: '2px 4px',
-                color: '#e84c89',
-                '&:hover': { background: 'rgba(232, 76, 137, 0.1)' }
-              }}
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </IconButton>
-          </Box>
+          <Button
+            onClick={(e) => setThemeAnchor(e.currentTarget)}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              background: isDarkMode ? 'rgba(139, 158, 247, 0.2)' : `rgba(232, 76, 137, 0.1)`,
+              border: isDarkMode ? `1px solid rgba(139, 158, 247, 0.4)` : `1px solid #ddd`,
+              borderRadius: '4px',
+              padding: '2px 6px',
+              fontSize: '0.65rem',
+              fontWeight: '600',
+              color: isDarkMode ? '#b0b0b0' : '#333',
+              minHeight: 'auto',
+              height: '24px',
+              textTransform: 'none',
+              '&:hover': {
+                background: isDarkMode ? 'rgba(139, 158, 247, 0.3)' : `rgba(232, 76, 137, 0.15)`,
+                borderColor: isDarkMode ? 'rgba(139, 158, 247, 0.6)' : '#ccc'
+              }
+            }}
+          >
+            <Box sx={{ marginRight: '4px', width: '8px', height: '8px', background: THEME_OPTIONS.find(t => t.code === currentTheme)?.color, borderRadius: '1px', display: 'inline-block' }} />
+            {currentTheme.substring(0, 2).toUpperCase()}
+          </Button>
+          <Menu
+            anchorEl={themeAnchor}
+            open={Boolean(themeAnchor)}
+            onClose={() => setThemeAnchor(null)}
+          >
+            {THEME_OPTIONS.map(({ code, label, color }) => (
+              <MenuItem
+                key={code}
+                onClick={() => {
+                  setTheme(code);
+                  setThemeAnchor(null);
+                }}
+                sx={{ fontSize: '0.65rem' }}
+              >
+                <Box sx={{ marginRight: '6px', fontSize: '1rem', width: '8px', height: '8px', background: color, borderRadius: '1px', display: 'inline-block' }} />
+                {label}
+              </MenuItem>
+            ))}
+          </Menu>
 
-          <Typography sx={{ fontSize: '0.75rem', color: isDarkMode ? '#b0b0b0' : '#666', fontWeight: '500' }}>
-            Lang:
-          </Typography>
-          {['en', 'es', 'pt', 'fr', 'hi'].map(lang => (
-            <Button
-              key={lang}
-              onClick={() => setLanguage(lang)}
-              sx={{
-                padding: '4px 8px',
-                fontSize: '0.7rem',
-                fontWeight: language === lang ? '700' : '500',
-                textTransform: 'uppercase',
-                color: language === lang ? '#e84c89' : isDarkMode ? '#b0b0b0' : '#666',
-                background: language === lang ? 'rgba(232, 76, 137, 0.15)' : isDarkMode ? 'rgba(255,255,255,0.05)' : 'transparent',
-                border: `1px solid ${language === lang ? '#e84c89' : isDarkMode ? '#404040' : '#ddd'}`,
-                borderRadius: '5px',
-                minHeight: 'auto',
-                '&:hover': { background: 'rgba(232, 76, 137, 0.1)' }
-              }}
-            >
-              {lang.toUpperCase()}
-            </Button>
-          ))}
+          <Button
+            onClick={(e) => setLangAnchor(e.currentTarget)}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              background: isDarkMode ? 'rgba(139, 158, 247, 0.2)' : `rgba(232, 76, 137, 0.1)`,
+              border: isDarkMode ? `1px solid rgba(139, 158, 247, 0.4)` : `1px solid #ddd`,
+              borderRadius: '4px',
+              padding: '2px 6px',
+              fontSize: '0.65rem',
+              fontWeight: '600',
+              color: isDarkMode ? '#b0b0b0' : '#333',
+              minHeight: 'auto',
+              height: '24px',
+              textTransform: 'none',
+              '&:hover': {
+                background: isDarkMode ? 'rgba(139, 158, 247, 0.3)' : `rgba(232, 76, 137, 0.15)`,
+                borderColor: isDarkMode ? 'rgba(139, 158, 247, 0.6)' : '#ccc'
+              }
+            }}
+          >
+            {language.toUpperCase()}
+          </Button>
+          <Menu
+            anchorEl={langAnchor}
+            open={Boolean(langAnchor)}
+            onClose={() => setLangAnchor(null)}
+          >
+            {['en', 'es', 'pt', 'fr', 'hi'].map(lang => (
+              <MenuItem
+                key={lang}
+                onClick={() => {
+                  setLanguage(lang);
+                  setLangAnchor(null);
+                }}
+                sx={{ fontSize: '0.65rem' }}
+              >
+                {lang.toUpperCase()}
+              </MenuItem>
+            ))}
+          </Menu>
         </Box>
       </Box>
 
